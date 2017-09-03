@@ -37,4 +37,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Publish\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <NuspecFile>.\Diagnostic.nuspec</NuspecFile>
+  </PropertyGroup>
+
 </Project>
