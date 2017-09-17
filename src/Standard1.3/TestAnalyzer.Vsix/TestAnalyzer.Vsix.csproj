@@ -73,7 +73,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TestAnalyzerStandard\TestAnalyzerStandard.csproj">
+    <ProjectReference Include="..\TestAnalyzerStandard\TestAnalyzerStandard.csproj">
       <Project>{2CC7D98B-E218-4117-9702-E668540CAC0E}</Project>
       <Name>TestAnalyzerStandard</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
