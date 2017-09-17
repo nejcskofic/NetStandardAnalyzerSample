@@ -1,33 +1,12 @@
-﻿
-Building this project will produce an analyzer .dll, as well as the
-following two ways you may wish to package that analyzer:
- * A NuGet package (.nupkg file) that will add your assembly as a
-   project-local analyzer that participates in builds.
- * A VSIX extension (.vsix file) that will apply your analyzer to all projects
-   and works just in the IDE.
+﻿Instructions for building analyzer targeting netstandard 1.3
 
-To debug your analyzer, make sure the default project is the VSIX project and
-start debugging.  This will deploy the analyzer as a VSIX into another instance
-of Visual Studio, which is useful for debugging, even if you intend to produce
-a NuGet package.
+Steps to make it work:
 
-
-TRYING OUT YOUR NUGET PACKAGE
-
-To try out the NuGet package:
- 1. Create a local NuGet feed by following the instructions here:
-    > http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds
- 2. Copy the .nupkg file into that folder.
- 3. Open the target project in Visual Studio 2015.
- 4. Right-click on the project node in Solution Explorer and choose Manage
-    NuGet Packages.
- 5. Select the NuGet feed you created on the left.
- 6. Choose your analyzer from the list and click Install.
-
-If you want to automatically deploy the .nupkg file to the local feed folder
-when you build this project, follow these steps:
- 1. Right-click on this project in Solution Explorer and choose 'Unload Project'.
- 2. Right-click on this project and click "Edit".
- 3. Scroll down to the "AfterBuild" target.
- 4. In the "Exec" task, change the value inside "Command" after the -OutputDirectory
-    path to point to your local NuGet feed folder.
+- Create new .NET Standard library
+- Library must target .NET Standard 1.3. This is required if you wish to run analyzer as extension inside VS (extensions target .NET 4.6). Mapping between standard versions and full framework versions is available here. Also if you try to target lower version than 1.3, you will not be able to include required analyzer packages.
+- Add nuget package for Microsoft.Composition latest version. This is needed by Microsoft.CodeAnalysis.CSharp.Workspaces. If you try to add workspaces first, you will get error that referenced composition package is not compatible.
+- Add nuget package for Microsoft.CodeAnalysis.CSharp (I'm using latest 1.* version)
+- Add nuget package for Microsoft.CodeAnalysis.Csharp.Workspaces (version should match the version of Microsoft.CodeAnalysis.CSharp).
+- At this point you can copy code from portable project and build it. There should be no errors (you may have to close and reopen solution if VS is still displaying red squiggles).
+- To make VS extension work, just open source.extension.vsixmanifest, go to assets tab and change reference to .NET standard library
+- To create .nuget package just execute Pack from context menu of project

@@ -1,33 +1,16 @@
-﻿
-Building this project will produce an analyzer .dll, as well as the
-following two ways you may wish to package that analyzer:
- * A NuGet package (.nupkg file) that will add your assembly as a
-   project-local analyzer that participates in builds.
- * A VSIX extension (.vsix file) that will apply your analyzer to all projects
-   and works just in the IDE.
+﻿These are unofficial instructions how to make netstandard2.0 analyzers work in VS2017.
 
-To debug your analyzer, make sure the default project is the VSIX project and
-start debugging.  This will deploy the analyzer as a VSIX into another instance
-of Visual Studio, which is useful for debugging, even if you intend to produce
-a NuGet package.
+Tested on following environment:
+- Visual Studio Community 2017, version 15.3.4
+- Installed .NET Core 2.0 SDK (x86 and x64)
 
+To create netstandard2.0 analyzer follow the same steps as for netstandard 1.3.
 
-TRYING OUT YOUR NUGET PACKAGE
+Differences:
+- Analyzer project targets netsandard 2.0
+- Nuget versions for Microsoft.CodeAnalysis.CSharp and Microsoft.CodeAnalysis.CSharp.Workspaces are 2.3.0 (the same version as available on local machine under '.\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\Roslyn')
+- Vsix project targets .NET Framework 4.6.1
 
-To try out the NuGet package:
- 1. Create a local NuGet feed by following the instructions here:
-    > http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds
- 2. Copy the .nupkg file into that folder.
- 3. Open the target project in Visual Studio 2015.
- 4. Right-click on the project node in Solution Explorer and choose Manage
-    NuGet Packages.
- 5. Select the NuGet feed you created on the left.
- 6. Choose your analyzer from the list and click Install.
+To make it work inside VS 2017 IDE, you have to copy netstandard.dll (2.0.0) forwarding assembly to one of locations from which IDE loads DLLs. MSBuild knows how to handle 2.0 standard so you can take DLL from '.\Microsoft Visual Studio\2017\Community\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\nestandard.dll' and place it into '.\Microsoft Visual Studio\2017\Community\Common7\IDE'.
 
-If you want to automatically deploy the .nupkg file to the local feed folder
-when you build this project, follow these steps:
- 1. Right-click on this project in Solution Explorer and choose 'Unload Project'.
- 2. Right-click on this project and click "Edit".
- 3. Scroll down to the "AfterBuild" target.
- 4. In the "Exec" task, change the value inside "Command" after the -OutputDirectory
-    path to point to your local NuGet feed folder.
+As far as I am aware analyzers are working, though there are still some warnings if they are referenced via Nuget packages. This instructions were not extensively tested and use them at your own risk.
